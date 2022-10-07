@@ -8,6 +8,7 @@ def is_prime?(num)
     return true
 end
 
+
 def nth_prime(num)
     count = 0
     x = -1
@@ -17,6 +18,7 @@ def nth_prime(num)
     end
     x
 end
+
 
 def prime_range(min,max)
     primes = []
