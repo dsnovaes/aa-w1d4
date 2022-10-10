@@ -97,20 +97,19 @@ end
 # )   # "fooding gladingly rantingly dogo catlyo"
 
 
-
-# # Write a method proctition_platinum that accepts an array and any number of additional procs as arguments. The method should return a hash where the keys correspond to the number of procs passed in.
-
-# # For example, if three procs are passed in, then the hash should have the keys 1, 2, and 3.
-# # The values associated with each key should be an array containing the elements of the input array that return true when passed into the corresponding proc.
-
-# # For example, this means that the array that corresponds to the key 2 should contain the elements that return true when passed into the second proc.
-# # If an element returns true for multiple procs, then it should only be placed into the array that corresponds to the proc that appears first in the arguments.
-
-# def proctition_platinum
-
-# end
-
-
+def proctition_platinum(arr, *prcs)
+    result = Hash.new { |k,v| k[v] = [] }
+    prcs.each_index { |i| result[i+1] = [] }
+    arr.each do |el|
+        prcs.each_with_index do |prc, i|
+            if prc.call(el)
+                result[i + 1] << el
+                break
+            end
+        end
+    end
+    result
+end
 
 # p proctition_platinum(['WHO', 'what', 'when!', 'WHERE!', 'how', 'WHY'], is_yelled, contains_a)
 # # {1=>["when!", "WHERE!"], 2=>["what"]}
@@ -126,10 +125,20 @@ end
 
 
 
-
-# # procipher
-# # Write a method procipher that accepts a sentence and a hash as arguments. The hash contains procs as both keys and values. The method should return a new sentence where each word of the input sentence is changed by a value proc if the original word returns true when passed into the key proc. If an original word returns true for multiple key procs, then the value proc changes should be applied in the order that they appear in the hash.
-
+def procipher(sentence, hash)
+    arr = sentence.split(" ")
+    result = []
+    arr.each do |ele|
+        # debugger
+        new_word = ele
+        hash.each do |k,v|
+            # debugger
+            new_word = v.call(new_word) if k.call(ele)
+        end
+        result << new_word
+    end
+    result.join(" ")
+end
 
 # p procipher('he said what!',
 #     is_yelled => make_question,
@@ -158,37 +167,48 @@ end
 #     contains_a => make_question
 # ) # "STOP:) that??? taxi??? !won"
 
+def picky_procipher(sentence,hash)
+    arr = sentence.split(" ")
+    arr.map! do |ele|
+        new_word = ele
+        hash.each do |k,v|
+            # debugger
+            if k.call(ele)
+                new_word = v.call(new_word) 
+                break
+            end
+            
+        end
+        new_word
+    end
+    arr.join(" ")
+
+end
 
 
+p picky_procipher('he said what!',
+    is_yelled => make_question,
+    contains_a => reverse
+) # "he dias what!???"
 
-# # picky_procipher
-# # Write a method picky_procipher that accepts a sentence and a hash as arguments. The hash contains procs as both keys and values. The method should return a new sentence where each word of the input sentence is changed by a value proc if the original word returns true when passed into the key proc. If an original word returns true for multiple key procs, then only the value proc that appears earliest in the hash should be applied.
+p picky_procipher('he said what!',
+    contains_a => reverse,
+    is_yelled => make_question
+) # "he dias !tahw"
 
+p picky_procipher('he said what!',
+    contains_a => reverse,
+    is_yelled => add_smile
+) # "he dias !tahw"
 
+p picky_procipher('stop that taxi now',
+    is_upcase => add_smile,
+    is_yelled => reverse,
+    contains_a => make_question
+) # "stop that??? taxi??? now"
 
-# p picky_procipher('he said what!',
-#     is_yelled => make_question,
-#     contains_a => reverse
-# ) # "he dias what!???"
-
-# p picky_procipher('he said what!',
-#     contains_a => reverse,
-#     is_yelled => make_question
-# ) # "he dias !tahw"
-
-# p picky_procipher('he said what!',
-#     contains_a => reverse,
-#     is_yelled => add_smile
-# ) # "he dias !tahw"
-
-# p picky_procipher('stop that taxi now',
-#     is_upcase => add_smile,
-#     is_yelled => reverse,
-#     contains_a => make_question
-# ) # "stop that??? taxi??? now"
-
-# p picky_procipher('STOP that taxi!',
-#     is_upcase => add_smile,
-#     is_yelled => reverse,
-#     contains_a => make_question
-# ) # "STOP:) that??? !ixat"
+p picky_procipher('STOP that taxi!',
+    is_upcase => add_smile,
+    is_yelled => reverse,
+    contains_a => make_question
+) # "STOP:) that??? !ixat"

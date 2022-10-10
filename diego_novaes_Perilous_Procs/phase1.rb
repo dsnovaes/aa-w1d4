@@ -31,10 +31,10 @@ def filter_out(arr, &prc)
     # arr.select {|ele| !prc.call(ele) } # WORKS, but does not create a new array
 end
 
-p filter_out([10, 6, 3, 2, 5 ]) { |x| x.odd? }      # [10, 6, 2]
-p filter_out([1, 7, 3, 5 ]) { |x| x.odd? }          # []
-p filter_out([10, 6, 3, 2, 5 ]) { |x| x.even? }     # [3, 5]
-p filter_out([1, 7, 3, 5 ]) { |x| x.even? }         # [1, 7, 3, 5]
+# p filter_out([10, 6, 3, 2, 5 ]) { |x| x.odd? }      # [10, 6, 2]
+# p filter_out([1, 7, 3, 5 ]) { |x| x.odd? }          # []
+# p filter_out([10, 6, 3, 2, 5 ]) { |x| x.even? }     # [3, 5]
+# p filter_out([1, 7, 3, 5 ]) { |x| x.even? }         # [1, 7, 3, 5]
 
 def at_least?(arr, num, &prc)
     count = 0
